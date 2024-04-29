@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="generator"
+      content="CoffeeCup HTML Editor (www.coffeecup.com)"
+    />
+    <meta name="dcterms.created" content="Fri, 27 Jun 2014 21:02:23 GMT" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title></title>
+
+    <!--[if IE]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style>
+      .image {
+        position: absolute;
+        width: 30%;
+      }
+      body {
+        height: 100%;
+        width: 100vw;
+        position: absolute;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+      }
+      dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(253, 152, 0, 0.8);
+      }
+      dialog img {
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <dialog id="focusDialog">
+      <img id="focusImg" src="imgs/600p wide/leeyum-02.jpg" />
+    </dialog>
+
+    <img
+      src="imgs/2k wide/leeyum-01.jpg"
+      draggable="false"
+      class="image"
+      style="top: 8%; left: 2%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-02.jpg"
+      draggable="false"
+      class="image"
+      style="top: 12%; left: 34%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-03.jpg"
+      draggable="false"
+      class="image"
+      style="top: 8%; left: 65%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-04.jpg"
+      draggable="false"
+      class="image"
+      style="top: 37%; left: 10%; transform: scale(80%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-05.jpg"
+      draggable="false"
+      class="image"
+      style="top: 48%; left: 32%; transform: scale(90%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-06.jpg"
+      draggable="false"
+      class="image"
+      style="top: 32%; left: 67%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-07.jpg"
+      draggable="false"
+      class="image"
+      style="top: 64%; left: 7%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-08.jpg"
+      draggable="false"
+      class="image"
+      style="top: 62%; left: 65%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-09.jpg"
+      draggable="false"
+      class="image"
+      style="top: 90%; left: 69%; transform: scale(100%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-10.jpg"
+      draggable="false"
+      class="image"
+      style="top: 89%; left: 4%; transform: scale(90%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-11.jpg"
+      draggable="false"
+      class="image"
+      style="top: 75%; left: 45%; transform: scale(70%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-12.jpg"
+      draggable="false"
+      class="image"
+      style="top: 106%; left: 30%; transform: scale(110%)"
+    />
+    <img
+      src="imgs/2k wide/leeyum-13.jpg"
+      draggable="false"
+      class="image"
+      style="top: 122%; left: 65%; transform: scale(110%)"
+    />
+
+    <p></p>
+    <script>
+      const elements = document.querySelectorAll('.image')
+      const focusImg = document.getElementById('focusImg')
+      const focusDialog = document.getElementById('focusDialog')
+
+      function onDragDesktop(e) {
+        let element = e.target
+        let getStyle = window.getComputedStyle(element)
+        let left = parseInt(getStyle.left)
+        let top = parseInt(getStyle.top)
+        element.style.zIndex = `255`
+        element.style.left = `${left + e.movementX}px`
+        element.style.top = `${top + e.movementY}px`
+      }
+
+      window.onclick = function (event) {
+        if (event.target == focusImg) {
+          focusDialog.close()
+        }
+      }
+
+      elements.forEach((element) => {
+        var start_time
+        function start() {
+          start_time = new Date()
+        }
+        function end() {
+          var now = new Date()
+          return now - start_time
+        }
+        element.addEventListener('mousedown', () => {
+          element.addEventListener('mousemove', onDragDesktop)
+          start()
+        })
+        document.addEventListener('mouseup', () => {
+          element.removeEventListener('mousemove', onDragDesktop)
+          if (end() < 100) {
+            newSrc = element.src
+            focusImg.src = newSrc
+            focusDialog.showModal()
+          }
+        })
+
+        // Mobile
+        let previousTouch
+        function onDragMobile(e) {
+          const touch = e.touches[0]
+          if (previousTouch) {
+            e.movementX = touch.pageX - previousTouch.pageX
+            e.movementY = touch.pageY - previousTouch.pageY
+          }
+          let element = e.target
+          console.log(e)
+          let getStyle = window.getComputedStyle(element)
+          let left = parseInt(getStyle.left)
+          let top = parseInt(getStyle.top)
+          element.style.zIndex = `255`
+          element.style.left = `${left + e.movementX}px`
+          element.style.top = `${top + e.movementY}px`
+          previousTouch = touch
+        }
+
+        element.addEventListener('touchstart', () => {
+          document.documentElement.style.overflow = 'hidden'
+          element.addEventListener('touchmove', onDragMobile)
+
+          start()
+        })
+        document.addEventListener('touchend', () => {
+          document.documentElement.style.overflow = 'auto'
+          element.removeEventListener('touchmove', onDragMobile)
+          if (end() < 30) {
+            newSrc = element.src
+            focusImg.src = newSrc
+            focusDialog.showModal()
+          }
+        })
+      })
+    </script>
+  </body>
+</html>
